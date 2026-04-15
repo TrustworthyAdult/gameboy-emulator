@@ -27,4 +27,5 @@ pub enum Instruction {
     LdAFromAddr(u16),
     LdAddrA(u16),
     Di,
+    Ei,
 }

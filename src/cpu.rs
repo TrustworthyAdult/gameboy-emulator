@@ -29,6 +29,7 @@ pub struct Cpu {
     l: u8,
     ime: bool,
     halted: bool,
+    pending_ime: bool,
     memory: Box<dyn MemoryBus>,
 }
 
@@ -90,10 +91,16 @@ impl Cpu {
             l: 0,
             ime: false,
             halted: false,
+            pending_ime: false,
         }
     }
 
     pub fn step(&mut self) -> Result<(), CpuStepError> {
+        if self.pending_ime {
+            self.ime = true;
+            self.pending_ime = false;
+        }
+
         let pc = self.pc;
         let opcode = Opcode::try_from(self.fetch_byte())
             .map_err(|source| CpuStepError::Opcode { pc, source })?;
@@ -106,6 +113,10 @@ impl Cpu {
 
     pub(crate) fn disable_ime(&mut self) {
         self.ime = false
+    }
+
+    pub(crate) fn set_pending_ime(&mut self) {
+        self.pending_ime = true
     }
 }
 

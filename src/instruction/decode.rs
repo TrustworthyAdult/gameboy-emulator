@@ -25,6 +25,7 @@ impl Instruction {
             Opcode::LdAFromAddr => Ok(Instruction::LdAFromAddr(cpu.fetch_word())),
             Opcode::LdAddrA => Ok(Instruction::LdAddrA(cpu.fetch_word())),
             Opcode::Di => Ok(Instruction::Di),
+            Opcode::Ei => Ok(Instruction::Ei),
         }
     }
 }

@@ -1,5 +1,6 @@
 mod accumulator_address;
 mod di;
+mod ei;
 mod inc_dec_r16;
 mod inc_dec_r8;
 mod jump;
