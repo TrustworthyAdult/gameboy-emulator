@@ -19,4 +19,3 @@ impl MemoryBus for FlatMemory {
         self.data[addr as usize] = value;
     }
 }
-

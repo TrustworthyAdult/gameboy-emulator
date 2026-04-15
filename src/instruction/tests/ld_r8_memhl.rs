@@ -1,5 +1,7 @@
-use crate::{cpu::{registers::Register8, Cpu}, reg};
-
+use crate::{
+    cpu::{Cpu, registers::Register8},
+    reg,
+};
 
 fn test_ld_r8_from_mem_hl(opcode: u8, dest: Register8) {
     let mut cpu = Cpu::new_with_program(&[opcode]);
@@ -48,4 +50,3 @@ fn test_ld_h_from_mem_hl() {
 fn test_ld_l_from_mem_hl() {
     test_ld_r8_from_mem_hl(0x6E, reg!(L));
 }
-

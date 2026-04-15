@@ -4,16 +4,16 @@ pub enum Flag {
     Zero,
     Subtract,
     HalfCarry,
-    Carry
+    Carry,
 }
 
 impl Flag {
     pub fn bit_mask(&self) -> u8 {
         match self {
-            Flag::Zero      => 0b10000000,
-            Flag::Subtract  => 0b01000000,
+            Flag::Zero => 0b10000000,
+            Flag::Subtract => 0b01000000,
             Flag::HalfCarry => 0b00100000,
-            Flag::Carry     => 0b00010000
+            Flag::Carry => 0b00010000,
         }
     }
 }

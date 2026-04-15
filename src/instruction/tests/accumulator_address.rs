@@ -33,4 +33,3 @@ fn test_ld_address_a() {
 
     assert_eq!(cpu.read(addr), value);
 }
-

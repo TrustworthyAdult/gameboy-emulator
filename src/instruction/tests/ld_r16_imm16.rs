@@ -1,4 +1,4 @@
-use crate::cpu::{registers::Register16, Cpu};
+use crate::cpu::{Cpu, registers::Register16};
 
 fn test_ld_r16_imm16(opcode: u8, reg: Register16) {
     let value = 0x1234;
@@ -8,12 +8,7 @@ fn test_ld_r16_imm16(opcode: u8, reg: Register16) {
     let mut cpu = Cpu::new_with_program(&[opcode, low, high]);
     cpu.step().unwrap();
 
-    assert_eq!(
-        cpu.get_register16(reg),
-        value,
-        "LD {:?}, imm16 failed",
-        reg
-    );
+    assert_eq!(cpu.get_register16(reg), value, "LD {:?}, imm16 failed", reg);
 }
 
 #[test]
@@ -35,4 +30,3 @@ fn test_ld_hl_imm16() {
 fn test_ld_sp_imm16() {
     test_ld_r16_imm16(0x31, Register16::SP);
 }
-

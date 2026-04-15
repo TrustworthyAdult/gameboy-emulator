@@ -14,19 +14,19 @@ use thiserror::Error;
 impl Instruction {
     pub fn execute(&self, cpu: &mut Cpu) -> Result<(), InstructionExecuteError> {
         match self {
-            Instruction::Nop                       => Ok(()),
-            Instruction::JpImm16(addr)             => self.jp_imm16(cpu, *addr),
-            Instruction::LdR8 { reg, value }       => self.ld_r8(cpu, *reg, *value),
-            Instruction::LdR8R8 { dst, src }       => self.ld_r8_r8(cpu, *dst, *src),
-            Instruction::LdR16 { reg, value }      => self.ld_r16(cpu, *reg, *value),
-            Instruction::IncR8(reg)                => self.inc_r8(cpu, *reg),
-            Instruction::DecR8(reg)                => self.dec_r8(cpu, *reg),
-            Instruction::IncR16(reg)               => self.inc_r16(cpu, *reg),
-            Instruction::DecR16(reg)               => self.dec_r16(cpu, *reg),
-            Instruction::LdMemHLR8(reg)            => self.ld_mem_hlr8(cpu, *reg),
-            Instruction::LdR8FromMemHL(reg)        => self.ld_r8_from_mem_hl(cpu, *reg),
-            Instruction::LdAFromAddr(addr)         => self.ld_a_from_addr(cpu, *addr),
-            Instruction::LdAddrA(addr)             => self.ld_addr_a(cpu, *addr),
+            Instruction::Nop => Ok(()),
+            Instruction::JpImm16(addr) => self.jp_imm16(cpu, *addr),
+            Instruction::LdR8 { reg, value } => self.ld_r8(cpu, *reg, *value),
+            Instruction::LdR8R8 { dst, src } => self.ld_r8_r8(cpu, *dst, *src),
+            Instruction::LdR16 { reg, value } => self.ld_r16(cpu, *reg, *value),
+            Instruction::IncR8(reg) => self.inc_r8(cpu, *reg),
+            Instruction::DecR8(reg) => self.dec_r8(cpu, *reg),
+            Instruction::IncR16(reg) => self.inc_r16(cpu, *reg),
+            Instruction::DecR16(reg) => self.dec_r16(cpu, *reg),
+            Instruction::LdMemHLR8(reg) => self.ld_mem_hlr8(cpu, *reg),
+            Instruction::LdR8FromMemHL(reg) => self.ld_r8_from_mem_hl(cpu, *reg),
+            Instruction::LdAFromAddr(addr) => self.ld_a_from_addr(cpu, *addr),
+            Instruction::LdAddrA(addr) => self.ld_addr_a(cpu, *addr),
         }
     }
 

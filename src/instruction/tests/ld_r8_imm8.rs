@@ -1,4 +1,7 @@
-use crate::{cpu::{registers::Register8, Cpu}, reg};
+use crate::{
+    cpu::{Cpu, registers::Register8},
+    reg,
+};
 
 fn test_ld_r8_imm8(register: Register8, opcode: u8) {
     let val = 0xAB;
@@ -41,4 +44,3 @@ fn test_ld_l() {
 fn test_ld_a() {
     test_ld_r8_imm8(reg!(A), 0x3E);
 }
-

@@ -4,10 +4,9 @@
 #![allow(unused_imports)]
 #![allow(unreachable_patterns)]
 
-mod instruction;
 mod cpu;
+mod instruction;
 mod memory;
 mod util;
 
-fn main() {
-}
+fn main() {}

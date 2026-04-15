@@ -1,4 +1,4 @@
-use crate::cpu::{flags::Flag, Cpu};
+use crate::cpu::{Cpu, flags::Flag};
 
 pub struct FlagAdjustment {
     pub zero: Option<bool>,

@@ -16,4 +16,3 @@ fn opcode_coverage() {
     println!("✅ Implemented opcodes: {}/256", count);
     assert_eq!(count, 256, "Still missing opcodes!");
 }
-

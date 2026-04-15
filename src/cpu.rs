@@ -12,7 +12,8 @@ use crate::{
     instruction::{
         Instruction, InstructionDecodeError, InstructionExecuteError, Opcode, OpcodeDecodeError,
     },
-    memory::{FlatMemory, MemoryBus}, util,
+    memory::{FlatMemory, MemoryBus},
+    util,
 };
 
 pub struct Cpu {
@@ -37,10 +38,16 @@ pub enum CpuStepError {
     Opcode { pc: u16, source: OpcodeDecodeError },
 
     #[error("0x{pc:04X}: failed to decode instruction: {source}")]
-    Decode { pc: u16, source: InstructionDecodeError },
+    Decode {
+        pc: u16,
+        source: InstructionDecodeError,
+    },
 
     #[error("0x{pc:04X}: failed to execute instruction: {source}")]
-    Execute { pc: u16, source: InstructionExecuteError },
+    Execute {
+        pc: u16,
+        source: InstructionExecuteError,
+    },
 }
 
 impl Cpu {
@@ -92,7 +99,8 @@ impl Cpu {
             .map_err(|source| CpuStepError::Opcode { pc, source })?;
         let instruction = Instruction::decode(opcode, self)
             .map_err(|source| CpuStepError::Decode { pc, source })?;
-        instruction.execute(self)
+        instruction
+            .execute(self)
             .map_err(|source| CpuStepError::Execute { pc, source })
     }
 }
@@ -111,9 +119,8 @@ impl Cpu {
         cpu.pc = 0x0100;
         cpu
     }
- 
+
     pub fn pc(&self) -> u16 {
         self.pc
     }
-
 }

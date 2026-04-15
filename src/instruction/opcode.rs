@@ -1,7 +1,10 @@
 use std::convert::TryFrom;
 use thiserror::Error;
 
-use crate::{cpu::registers::{Register16, Register8}, reg};
+use crate::{
+    cpu::registers::{Register8, Register16},
+    reg,
+};
 
 pub enum Opcode {
     //Nop
@@ -61,55 +64,202 @@ impl TryFrom<u8> for Opcode {
             0x3E => Ok(Opcode::LdR8(reg!(A))),
 
             // Ld r8 r8
-            0x40 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(B)}),
-            0x41 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(C)}),
-            0x42 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(D)}),
-            0x43 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(E)}),
-            0x44 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(H)}),
-            0x45 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(L)}),
-            0x47 => Ok(Opcode::LdR8R8 { dst: reg!(B), src: reg!(A)}),
-            0x48 => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(B)}),
-            0x49 => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(C)}),
-            0x4A => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(D)}),
-            0x4B => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(E)}),
-            0x4C => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(H)}),
-            0x4D => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(L)}),
-            0x4F => Ok(Opcode::LdR8R8 { dst: reg!(C), src: reg!(A)}),
-            0x50 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(B)}),
-            0x51 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(C)}),
-            0x52 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(D)}),
-            0x53 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(E)}),
-            0x54 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(H)}),
-            0x55 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(L)}),
-            0x57 => Ok(Opcode::LdR8R8 { dst: reg!(D), src: reg!(A)}),
-            0x58 => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(B)}),
-            0x59 => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(C)}),
-            0x5A => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(D)}),
-            0x5B => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(E)}),
-            0x5C => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(H)}),
-            0x5D => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(L)}),
-            0x5F => Ok(Opcode::LdR8R8 { dst: reg!(E), src: reg!(A)}),
-            0x60 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(B)}),
-            0x61 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(C)}),
-            0x62 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(D)}),
-            0x63 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(E)}),
-            0x64 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(H)}),
-            0x65 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(L)}),
-            0x67 => Ok(Opcode::LdR8R8 { dst: reg!(H), src: reg!(A)}),
-            0x68 => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(B)}),
-            0x69 => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(C)}),
-            0x6A => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(D)}),
-            0x6B => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(E)}),
-            0x6C => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(H)}),
-            0x6D => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(L)}),
-            0x6F => Ok(Opcode::LdR8R8 { dst: reg!(L), src: reg!(A)}),
-            0x78 => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(B)}),
-            0x79 => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(C)}),
-            0x7A => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(D)}),
-            0x7B => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(E)}),
-            0x7C => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(H)}),
-            0x7D => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(L)}),
-            0x7F => Ok(Opcode::LdR8R8 { dst: reg!(A), src: reg!(A)}),
+            0x40 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(B),
+            }),
+            0x41 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(C),
+            }),
+            0x42 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(D),
+            }),
+            0x43 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(E),
+            }),
+            0x44 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(H),
+            }),
+            0x45 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(L),
+            }),
+            0x47 => Ok(Opcode::LdR8R8 {
+                dst: reg!(B),
+                src: reg!(A),
+            }),
+            0x48 => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(B),
+            }),
+            0x49 => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(C),
+            }),
+            0x4A => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(D),
+            }),
+            0x4B => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(E),
+            }),
+            0x4C => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(H),
+            }),
+            0x4D => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(L),
+            }),
+            0x4F => Ok(Opcode::LdR8R8 {
+                dst: reg!(C),
+                src: reg!(A),
+            }),
+            0x50 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(B),
+            }),
+            0x51 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(C),
+            }),
+            0x52 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(D),
+            }),
+            0x53 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(E),
+            }),
+            0x54 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(H),
+            }),
+            0x55 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(L),
+            }),
+            0x57 => Ok(Opcode::LdR8R8 {
+                dst: reg!(D),
+                src: reg!(A),
+            }),
+            0x58 => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(B),
+            }),
+            0x59 => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(C),
+            }),
+            0x5A => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(D),
+            }),
+            0x5B => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(E),
+            }),
+            0x5C => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(H),
+            }),
+            0x5D => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(L),
+            }),
+            0x5F => Ok(Opcode::LdR8R8 {
+                dst: reg!(E),
+                src: reg!(A),
+            }),
+            0x60 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(B),
+            }),
+            0x61 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(C),
+            }),
+            0x62 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(D),
+            }),
+            0x63 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(E),
+            }),
+            0x64 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(H),
+            }),
+            0x65 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(L),
+            }),
+            0x67 => Ok(Opcode::LdR8R8 {
+                dst: reg!(H),
+                src: reg!(A),
+            }),
+            0x68 => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(B),
+            }),
+            0x69 => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(C),
+            }),
+            0x6A => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(D),
+            }),
+            0x6B => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(E),
+            }),
+            0x6C => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(H),
+            }),
+            0x6D => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(L),
+            }),
+            0x6F => Ok(Opcode::LdR8R8 {
+                dst: reg!(L),
+                src: reg!(A),
+            }),
+            0x78 => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(B),
+            }),
+            0x79 => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(C),
+            }),
+            0x7A => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(D),
+            }),
+            0x7B => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(E),
+            }),
+            0x7C => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(H),
+            }),
+            0x7D => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(L),
+            }),
+            0x7F => Ok(Opcode::LdR8R8 {
+                dst: reg!(A),
+                src: reg!(A),
+            }),
 
             // Accumulator <=> Address
             0xFA => Ok(Opcode::LdAFromAddr),

@@ -1,11 +1,11 @@
-pub mod opcode;
-pub mod execute;
 pub mod decode;
+pub mod execute;
 mod flag_adjustment;
+pub mod opcode;
 
-pub use opcode::{Opcode, OpcodeDecodeError};
 pub use decode::InstructionDecodeError;
 pub use execute::InstructionExecuteError;
+pub use opcode::{Opcode, OpcodeDecodeError};
 
 use crate::cpu::registers::{Register8, Register16};
 

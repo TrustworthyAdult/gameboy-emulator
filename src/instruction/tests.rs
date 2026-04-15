@@ -1,11 +1,11 @@
-mod nop;
-mod ld_r8_imm8;
-mod ld_r8_r8;
-mod jump;
 mod accumulator_address;
-mod inc_dec_r8;
 mod inc_dec_r16;
-mod ld_r8_memhl;
+mod inc_dec_r8;
+mod jump;
 mod ld_memhl_r8;
 mod ld_r16_imm16;
+mod ld_r8_imm8;
+mod ld_r8_memhl;
+mod ld_r8_r8;
+mod nop;
 mod opcode_coverage;

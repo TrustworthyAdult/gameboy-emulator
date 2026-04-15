@@ -5,4 +5,3 @@ pub trait MemoryBus {
 
 pub mod flat_memory;
 pub use flat_memory::FlatMemory;
-
