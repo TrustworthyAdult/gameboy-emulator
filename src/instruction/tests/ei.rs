@@ -1,4 +1,4 @@
-use crate::cpu::{snapshot::CpuSnapshot, Cpu};
+use crate::cpu::{Cpu, snapshot::CpuSnapshot};
 
 #[test]
 fn ei_does_not_set_ime_immediately() {

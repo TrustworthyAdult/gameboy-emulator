@@ -1,4 +1,4 @@
-use crate::cpu::{snapshot::CpuSnapshot, Cpu};
+use crate::cpu::{Cpu, snapshot::CpuSnapshot};
 
 #[test]
 fn halt_sets_halted() {
