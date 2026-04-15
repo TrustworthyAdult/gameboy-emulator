@@ -41,6 +41,8 @@ pub enum Opcode {
 
     LdAFromAddr,
     LdAddrA,
+
+    Di,
 }
 
 impl TryFrom<u8> for Opcode {
@@ -317,6 +319,8 @@ impl TryFrom<u8> for Opcode {
             0x11 => Ok(Opcode::LdR16(reg!(DE))),
             0x21 => Ok(Opcode::LdR16(reg!(HL))),
             0x31 => Ok(Opcode::LdR16(reg!(SP))),
+
+            0xF3 => Ok(Opcode::Di),
 
             _ => Err(OpcodeDecodeError::InvalidOpcode(byte)),
         }

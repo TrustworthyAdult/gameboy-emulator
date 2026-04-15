@@ -24,6 +24,7 @@ impl Instruction {
             Opcode::LdR8FromMemHL(reg) => Ok(Instruction::LdR8FromMemHL(reg)),
             Opcode::LdAFromAddr => Ok(Instruction::LdAFromAddr(cpu.fetch_word())),
             Opcode::LdAddrA => Ok(Instruction::LdAddrA(cpu.fetch_word())),
+            Opcode::Di => Ok(Instruction::Di),
         }
     }
 }

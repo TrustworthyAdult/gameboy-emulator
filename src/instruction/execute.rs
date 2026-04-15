@@ -27,6 +27,7 @@ impl Instruction {
             Instruction::LdR8FromMemHL(reg) => self.ld_r8_from_mem_hl(cpu, *reg),
             Instruction::LdAFromAddr(addr) => self.ld_a_from_addr(cpu, *addr),
             Instruction::LdAddrA(addr) => self.ld_addr_a(cpu, *addr),
+            Instruction::Di => self.di(cpu),
         }
     }
 
@@ -123,6 +124,11 @@ impl Instruction {
         value: u16,
     ) -> Result<(), InstructionExecuteError> {
         cpu.set_register16(reg, value);
+        Ok(())
+    }
+
+    fn di(&self, cpu: &mut Cpu) -> Result<(), InstructionExecuteError> {
+        cpu.disable_ime();
         Ok(())
     }
 }

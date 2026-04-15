@@ -103,6 +103,10 @@ impl Cpu {
             .execute(self)
             .map_err(|source| CpuStepError::Execute { pc, source })
     }
+
+    pub(crate) fn disable_ime(&mut self) {
+        self.ime = false
+    }
 }
 
 #[cfg(test)]
@@ -122,5 +126,9 @@ impl Cpu {
 
     pub fn pc(&self) -> u16 {
         self.pc
+    }
+
+    pub fn ime(&self) -> bool {
+        self.ime
     }
 }

@@ -26,4 +26,5 @@ pub enum Instruction {
     LdR8FromMemHL(Register8),
     LdAFromAddr(u16),
     LdAddrA(u16),
+    Di,
 }
