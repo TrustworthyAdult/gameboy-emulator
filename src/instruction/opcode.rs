@@ -44,6 +44,7 @@ pub enum Opcode {
 
     Di,
     Ei,
+    Halt,
 }
 
 impl TryFrom<u8> for Opcode {
@@ -321,6 +322,7 @@ impl TryFrom<u8> for Opcode {
             0x21 => Ok(Opcode::LdR16(reg!(HL))),
             0x31 => Ok(Opcode::LdR16(reg!(SP))),
 
+            0x76 => Ok(Opcode::Halt),
             0xF3 => Ok(Opcode::Di),
             0xFB => Ok(Opcode::Ei),
 

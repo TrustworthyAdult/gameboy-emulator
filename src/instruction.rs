@@ -28,4 +28,5 @@ pub enum Instruction {
     LdAddrA(u16),
     Di,
     Ei,
+    Halt,
 }

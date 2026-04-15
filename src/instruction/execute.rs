@@ -29,6 +29,7 @@ impl Instruction {
             Instruction::LdAddrA(addr) => self.ld_addr_a(cpu, *addr),
             Instruction::Di => self.di(cpu),
             Instruction::Ei => self.ei(cpu),
+            Instruction::Halt => self.halt(cpu),
         }
     }
 
@@ -135,6 +136,11 @@ impl Instruction {
 
     fn ei(&self, cpu: &mut crate::cpu::Cpu) -> Result<(), InstructionExecuteError> {
         cpu.set_pending_ime();
+        Ok(())
+    }
+
+    fn halt(&self, cpu: &mut Cpu) -> Result<(), InstructionExecuteError> {
+        cpu.halt();
         Ok(())
     }
 }

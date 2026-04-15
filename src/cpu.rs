@@ -101,6 +101,10 @@ impl Cpu {
             self.pending_ime = false;
         }
 
+        if self.halted {
+            return Ok(());
+        }
+
         let pc = self.pc;
         let opcode = Opcode::try_from(self.fetch_byte())
             .map_err(|source| CpuStepError::Opcode { pc, source })?;
@@ -117,6 +121,10 @@ impl Cpu {
 
     pub(crate) fn set_pending_ime(&mut self) {
         self.pending_ime = true
+    }
+
+    pub(crate) fn halt(&mut self) {
+        self.halted = true
     }
 }
 
@@ -141,5 +149,9 @@ impl Cpu {
 
     pub fn ime(&self) -> bool {
         self.ime
+    }
+
+    pub fn halted(&self) -> bool {
+        self.halted
     }
 }
