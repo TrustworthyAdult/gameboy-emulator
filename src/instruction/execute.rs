@@ -107,7 +107,7 @@ impl Instruction {
             zero: Some(result == 0),
             subtract: Some(false),
             half_carry: Some(before & 0b1111 == 0b1111),
-            carry: Some(result == 0),
+            carry: None,
         };
 
         flag_adjustment.apply(cpu);
@@ -116,7 +116,18 @@ impl Instruction {
     }
 
     fn dec_r8(&self, cpu: &mut Cpu, reg: Register8) -> Result<(), InstructionExecuteError> {
+        let before = cpu.get_register8(reg);
         cpu.sub_r8(reg, 1);
+        let result = cpu.get_register8(reg);
+
+        FlagAdjustment {
+            zero: Some(result == 0),
+            subtract: Some(true),
+            half_carry: Some(before & 0b1111 == 0b0000),
+            carry: None,
+        }
+        .apply(cpu);
+
         Ok(())
     }
 

@@ -1,5 +1,5 @@
 use crate::{
-    cpu::{Cpu, registers::Register8},
+    cpu::{Cpu, flags::Flag, registers::Register8},
     reg,
 };
 
@@ -53,6 +53,108 @@ fn test_inc_h() {
 #[test]
 fn test_inc_l() {
     test_inc_r8(reg!(L), 0x2C);
+}
+
+// inc_r8 flag tests (opcode 0x04 = INC B)
+#[test]
+fn test_inc_r8_zero_flag_set() {
+    let mut cpu = Cpu::new_with_program(&[0x04]);
+    cpu.set_register8(reg!(B), 0xFF);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::Zero));
+    assert!(!cpu.get_flag(Flag::Subtract));
+    assert!(cpu.get_flag(Flag::HalfCarry));
+}
+
+#[test]
+fn test_inc_r8_zero_flag_clear() {
+    let mut cpu = Cpu::new_with_program(&[0x04]);
+    cpu.set_register8(reg!(B), 0x41);
+    cpu.step().unwrap();
+    assert!(!cpu.get_flag(Flag::Zero));
+}
+
+#[test]
+fn test_inc_r8_half_carry_set() {
+    let mut cpu = Cpu::new_with_program(&[0x04]);
+    cpu.set_register8(reg!(B), 0x0F);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::HalfCarry));
+}
+
+#[test]
+fn test_inc_r8_half_carry_clear() {
+    let mut cpu = Cpu::new_with_program(&[0x04]);
+    cpu.set_register8(reg!(B), 0x10);
+    cpu.step().unwrap();
+    assert!(!cpu.get_flag(Flag::HalfCarry));
+}
+
+#[test]
+fn test_inc_r8_subtract_clear() {
+    let mut cpu = Cpu::new_with_program(&[0x04]);
+    cpu.set_register8(reg!(B), 0x01);
+    cpu.step().unwrap();
+    assert!(!cpu.get_flag(Flag::Subtract));
+}
+
+#[test]
+fn test_inc_r8_carry_unaffected() {
+    let mut cpu = Cpu::new_with_program(&[0x04]);
+    cpu.set_flag(Flag::Carry, true);
+    cpu.set_register8(reg!(B), 0x01);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::Carry));
+}
+
+// dec_r8 flag tests (opcode 0x05 = DEC B)
+#[test]
+fn test_dec_r8_zero_flag_set() {
+    let mut cpu = Cpu::new_with_program(&[0x05]);
+    cpu.set_register8(reg!(B), 0x01);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::Zero));
+}
+
+#[test]
+fn test_dec_r8_zero_flag_clear() {
+    let mut cpu = Cpu::new_with_program(&[0x05]);
+    cpu.set_register8(reg!(B), 0x43);
+    cpu.step().unwrap();
+    assert!(!cpu.get_flag(Flag::Zero));
+}
+
+#[test]
+fn test_dec_r8_half_carry_set() {
+    let mut cpu = Cpu::new_with_program(&[0x05]);
+    cpu.set_register8(reg!(B), 0x10);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::HalfCarry));
+}
+
+#[test]
+fn test_dec_r8_half_carry_clear() {
+    let mut cpu = Cpu::new_with_program(&[0x05]);
+    cpu.set_register8(reg!(B), 0x42);
+    cpu.step().unwrap();
+    assert!(!cpu.get_flag(Flag::HalfCarry));
+}
+
+#[test]
+fn test_dec_r8_subtract_set() {
+    let mut cpu = Cpu::new_with_program(&[0x05]);
+    cpu.set_register8(reg!(B), 0x02);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::Subtract));
+}
+
+#[test]
+fn test_dec_r8_carry_unaffected() {
+    let mut cpu = Cpu::new_with_program(&[0x05]);
+    cpu.set_flag(Flag::Carry, true);
+    cpu.set_register8(reg!(B), 0x02);
+    cpu.step().unwrap();
+    assert!(cpu.get_flag(Flag::Carry));
 }
 
 // Decrement
