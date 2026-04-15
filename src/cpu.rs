@@ -26,43 +26,45 @@ pub struct Cpu {
     e: u8,
     h: u8,
     l: u8,
+    ime: bool,
+    halted: bool,
     memory: Box<dyn MemoryBus>,
 }
 
 #[derive(Debug, Error)]
 pub enum CpuStepError {
-    #[error("Failed to decode opcode: {0}")]
-    Opcode(#[from] OpcodeDecodeError),
+    #[error("0x{pc:04X}: failed to decode opcode: {source}")]
+    Opcode { pc: u16, source: OpcodeDecodeError },
 
-    #[error("Failed to decode instruction: {0}")]
-    Decode(#[from] InstructionDecodeError),
+    #[error("0x{pc:04X}: failed to decode instruction: {source}")]
+    Decode { pc: u16, source: InstructionDecodeError },
 
-    #[error("Failed to execute instruction: {0}")]
-    Execute(#[from] InstructionExecuteError),
+    #[error("0x{pc:04X}: failed to execute instruction: {source}")]
+    Execute { pc: u16, source: InstructionExecuteError },
 }
 
 impl Cpu {
-    pub fn fetch_byte(&mut self) -> u8 {
+    pub(crate) fn fetch_byte(&mut self) -> u8 {
         let value = self.memory.read(self.pc);
         self.pc = self.pc.wrapping_add(1);
         value
     }
 
-    pub fn fetch_word(&mut self) -> u16 {
+    pub(crate) fn fetch_word(&mut self) -> u16 {
         let low_byte = self.fetch_byte();
         let high_byte = self.fetch_byte();
         util::concat_bytes(high_byte, low_byte)
     }
 
-    pub fn read(&self, address: u16) -> u8 {
+    pub(crate) fn read(&self, address: u16) -> u8 {
         self.memory.read(address)
     }
 
-    pub fn write(&mut self, address: u16, value: u8) {
+    pub(crate) fn write(&mut self, address: u16, value: u8) {
         self.memory.write(address, value)
     }
 
-    pub fn set_pc(&mut self, value: u16) {
+    pub(crate) fn set_pc(&mut self, value: u16) {
         self.pc = value
     }
 
@@ -79,14 +81,19 @@ impl Cpu {
             e: 0,
             h: 0,
             l: 0,
+            ime: false,
+            halted: false,
         }
     }
 
     pub fn step(&mut self) -> Result<(), CpuStepError> {
-        let opcode = Opcode::try_from(self.fetch_byte())?;
-        let instruction = Instruction::decode(opcode, self)?;
-        instruction.execute(self)?;
-        Ok(())
+        let pc = self.pc;
+        let opcode = Opcode::try_from(self.fetch_byte())
+            .map_err(|source| CpuStepError::Opcode { pc, source })?;
+        let instruction = Instruction::decode(opcode, self)
+            .map_err(|source| CpuStepError::Decode { pc, source })?;
+        instruction.execute(self)
+            .map_err(|source| CpuStepError::Execute { pc, source })
     }
 }
 
