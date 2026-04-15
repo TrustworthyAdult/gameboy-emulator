@@ -1,5 +1,5 @@
 use super::{
-    Instruction, Opcode, Operand,
+    Instruction,
     flag_adjustment::{self, FlagAdjustment},
 };
 use crate::{
@@ -7,51 +7,26 @@ use crate::{
         Cpu,
         registers::{Register8, Register16},
     },
-    reg, unpack_operand,
+    reg,
 };
 use thiserror::Error;
 
 impl Instruction {
     pub fn execute(&self, cpu: &mut Cpu) -> Result<(), InstructionExecuteError> {
-        let operand = &self.operand;
-        match self.opcode {
-            // Nop
-            Opcode::Nop => Ok(()),
-
-            // Jump
-            Opcode::JpImm16 => self.jp_imm16(cpu, unpack_operand!(operand, Imm16)),
-
-            // Ld r8 imm8
-            Opcode::LdR8(r8) => self.ld_r8(cpu, r8, unpack_operand!(operand, Imm8)),
-
-            // Ld r8 r8
-            Opcode::LdR8R8 { dst, src } => self.ld_r8_r8(cpu, dst, src),
-
-            // Ld MemHL r8
-            Opcode::LdMemHLR8(reg) => self.ld_mem_hlr8(cpu, reg),
-
-            // Ld r8 MemHL
-            Opcode::LdR8FromMemHL(reg) => self.ld_r8_from_mem_hl(cpu, reg),
-
-            // Ld A from Address
-            Opcode::LdAFromAddr => self.ld_a_from_addr(cpu, unpack_operand!(operand, Address)),
-
-            Opcode::LdAddrA => self.ld_addr_a(cpu, unpack_operand!(operand, Address)),
-
-            // Inc r8
-            Opcode::IncR8(reg) => self.inc_r8(cpu, reg),
-
-            // Dec r8
-            Opcode::DecR8(reg) => self.dec_r8(cpu, reg),
-
-            // Inc r16
-            Opcode::IncR16(reg) => self.inc_r16(cpu, reg),
-
-            // Dec r16
-            Opcode::DecR16(reg) => self.dec_r16(cpu, reg),
-
-            // Ld r16
-            Opcode::LdR16(reg) => self.ld_r16(cpu, reg, unpack_operand!(operand, Imm16)),
+        match self {
+            Instruction::Nop                       => Ok(()),
+            Instruction::JpImm16(addr)             => self.jp_imm16(cpu, *addr),
+            Instruction::LdR8 { reg, value }       => self.ld_r8(cpu, *reg, *value),
+            Instruction::LdR8R8 { dst, src }       => self.ld_r8_r8(cpu, *dst, *src),
+            Instruction::LdR16 { reg, value }      => self.ld_r16(cpu, *reg, *value),
+            Instruction::IncR8(reg)                => self.inc_r8(cpu, *reg),
+            Instruction::DecR8(reg)                => self.dec_r8(cpu, *reg),
+            Instruction::IncR16(reg)               => self.inc_r16(cpu, *reg),
+            Instruction::DecR16(reg)               => self.dec_r16(cpu, *reg),
+            Instruction::LdMemHLR8(reg)            => self.ld_mem_hlr8(cpu, *reg),
+            Instruction::LdR8FromMemHL(reg)        => self.ld_r8_from_mem_hl(cpu, *reg),
+            Instruction::LdAFromAddr(addr)         => self.ld_a_from_addr(cpu, *addr),
+            Instruction::LdAddrA(addr)             => self.ld_addr_a(cpu, *addr),
         }
     }
 
